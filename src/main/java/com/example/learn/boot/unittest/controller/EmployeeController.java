@@ -37,7 +37,7 @@ public class EmployeeController {
     @ResponseBody
     public ResponseEntity create(@RequestBody EmployeeDTO dto) {
         EmployeeDTO savedDTO = employeeService.save(dto);
-        if(dto ==null ){
+        if(dto.getName() ==null ){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
         return  ResponseEntity.status(HttpStatus.CREATED).body(savedDTO);
@@ -55,6 +55,8 @@ public class EmployeeController {
 
     }
 
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
        EmployeeDTO employeeDTO= employeeService.deleteEmployeeById(id);
@@ -62,14 +64,28 @@ public class EmployeeController {
     }
 
 
+//    @PutMapping("/{id}")
+//    public ResponseEntity<EmployeeDTO> update(@PathVariable long id, @RequestBody EmployeeDTO employeeDTO) {
+//        EmployeeDTO updatedEmployeeDTO = employeeService.updateEmployee(id, employeeDTO);
+//        if (updatedEmployeeDTO == null) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        }
+//        return ResponseEntity.status(HttpStatus.OK).body(updatedEmployeeDTO);
+//    }
+
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeDTO> update(@PathVariable long id, @RequestBody EmployeeDTO employeeDTO) {
+        if (employeeDTO == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
         EmployeeDTO updatedEmployeeDTO = employeeService.updateEmployee(id, employeeDTO);
         if (updatedEmployeeDTO == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         return ResponseEntity.status(HttpStatus.OK).body(updatedEmployeeDTO);
     }
+
+
 
 
 }
